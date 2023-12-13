@@ -3,7 +3,7 @@ name: todo_drift_app_test
 on:
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   tests:
