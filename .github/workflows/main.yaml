@@ -1,0 +1,17 @@
+name: todo_drift_app_test
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v2
+      - name: install dependencies
+        run: flutter packages get
+      - name: run tests
+        run: flutter test --exclude-tags='no-ci'
