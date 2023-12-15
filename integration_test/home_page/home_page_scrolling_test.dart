@@ -2,69 +2,43 @@
 
 import 'package:drift_app_testble/domain/repository/todo_repository.dart';
 import 'package:drift_app_testble/helpers/unit_todo_factory.dart';
-import 'package:drift_app_testble/page/details_page/cubit/todo_details_cubit.dart';
 import 'package:drift_app_testble/page/details_page/todo_details_page.dart';
 import 'package:drift_app_testble/page/home/cubit/home_page_cubit.dart';
 import 'package:drift_app_testble/page/home/home_page.dart';
-import 'package:drift_app_testble/page/services/di.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockTodoRepo extends Mock implements TodoRepository {}
-
-Widget wrapMaterialWidget(Widget child) => MaterialApp(home: child);
+import '../../test/unit_test/home_page/cubit/home_page_cubit_test.dart';
+import '../test_app_helper.dart';
 
 void main() {
-  final binding = IntegrationTestWidgetsFlutterBinding();
-  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  late Widget homeBaseWidget;
-  late HomePageCubit homePageCubit;
-  late TodoDetailsCubit todoDetailsPageCubit;
-  late TodoRepository mockTodoRepo;
+  late Widget homeWidget;
+  late HomePageCubit homeCubit;
+  late TodoRepository mockRepository;
 
   setUp(() async {
-    /// get it base init
-    mockTodoRepo = MockTodoRepo();
-    getIt.registerLazySingleton<TodoRepository>(() => mockTodoRepo);
-    homePageCubit = HomePageCubit(todoRepository: getIt());
-    todoDetailsPageCubit = TodoDetailsCubit(
-      todoRepository: getIt(),
-      todo: UnitTodoFactory.todo15,
-    );
-    getIt.registerFactory<HomePageCubit>(() => homePageCubit);
-    getIt.registerFactory<TodoDetailsCubit>(() => todoDetailsPageCubit);
-
-    when(() => mockTodoRepo.getTodos()).thenAnswer((_) async => []);
-    when(() => mockTodoRepo.watchTodos()).thenAnswer(
-      (_) => Stream.fromIterable([]),
-    );
-
-    homeBaseWidget = wrapMaterialWidget(
-      BlocProvider(
-        create: (context) => homePageCubit,
-        lazy: false,
-        child: const HomePage(),
-      ),
-    );
+    final (homeW, homeC, _, mockR) = TestAppHelper.setUpHomeMain();
+    homeWidget = homeW;
+    homeCubit = homeC;
+    mockRepository = mockR;
   });
 
   tearDown(() async {
-    /// destroy get it
-    getIt.reset();
+    TestAppHelper.reset();
   });
 
   group('Test scrolling behaviour', () {
     testWidgets('Test many todos in list', (tester) async {
       final visibleTodo = UnitTodoFactory.todo15;
-      when(() => mockTodoRepo.getTodos()).thenAnswer(
+      when(() => mockRepository.getTodos()).thenAnswer(
         (_) async => [...UnitTodoFactory.fullListTodos],
       );
-      await tester.pumpWidget(homeBaseWidget);
-      homePageCubit.getTodos(FilterKind.all);
+      await tester.pumpWidget(homeWidget);
+      homeCubit.getTodos(FilterKind.all);
 
       /// Wait till network or cache request has done
       await tester.pumpAndSettle(Duration(seconds: 1));

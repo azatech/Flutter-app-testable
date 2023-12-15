@@ -2,74 +2,49 @@
 
 import 'package:drift_app_testble/domain/repository/todo_repository.dart';
 import 'package:drift_app_testble/helpers/unit_todo_factory.dart';
-import 'package:drift_app_testble/page/details_page/cubit/todo_details_cubit.dart';
 import 'package:drift_app_testble/page/details_page/todo_details_page.dart';
 import 'package:drift_app_testble/page/home/cubit/home_page_cubit.dart';
 import 'package:drift_app_testble/page/home/home_page.dart';
-import 'package:drift_app_testble/page/services/di.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../test/unit_test/home_page/cubit/home_page_cubit_test.dart';
+import '../helpers/material_wrapper.dart';
+import '../test_app_helper.dart';
 
 final _todo1 = UnitTodoFactory.todo1;
 final _todo2 = UnitTodoFactory.todo2;
 final _todo3 = UnitTodoFactory.todo3;
 
-class MockTodoRepo extends Mock implements TodoRepository {}
-
-Widget wrapMaterialWidget(Widget child) => MaterialApp(home: child);
-
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  late Widget homeBaseWidget;
-  late HomePageCubit homePageCubit;
-  late TodoDetailsCubit todoDetailsPageCubit;
-  late TodoRepository mockTodoRepo;
+  late Widget homeWidget;
+  late HomePageCubit homeCubit;
+  late TodoRepository mockRepository;
 
   setUp(() async {
-    /// get it base init
-    mockTodoRepo = MockTodoRepo();
-    getIt.registerLazySingleton<TodoRepository>(() => mockTodoRepo);
-    homePageCubit = HomePageCubit(todoRepository: getIt());
-    todoDetailsPageCubit = TodoDetailsCubit(
-      todoRepository: getIt(),
-      todo: _todo1,
-    );
-    getIt.registerFactory<HomePageCubit>(() => homePageCubit);
-    getIt.registerFactory<TodoDetailsCubit>(() => todoDetailsPageCubit);
-
-    when(() => mockTodoRepo.getTodos()).thenAnswer((_) async => []);
-    when(() => mockTodoRepo.watchTodos()).thenAnswer(
-      (_) => Stream.fromIterable([]),
-    );
-
-    homeBaseWidget = wrapMaterialWidget(
-      BlocProvider(
-        create: (context) => homePageCubit,
-        lazy: false,
-        child: const HomePage(),
-      ),
-    );
+    final (homeW, homeC, _, mockR) = TestAppHelper.setUpHomeMain();
+    homeWidget = homeW;
+    homeCubit = homeC;
+    mockRepository = mockR;
   });
 
   tearDown(() async {
-    /// destroy get it
-    getIt.reset();
+    TestAppHelper.reset();
   });
 
   group('Home page initial empty UI smoke tests', () {
     testWidgets('App Bar title widget test', (tester) async {
-      await tester.pumpWidget(homeBaseWidget);
+      await tester.pumpWidget(homeWidget);
       final titleFinder = find.text(titleAppName);
       expect(titleFinder, findsOneWidget);
     });
 
     testWidgets('Test initial Empty list text in widget tree', (tester) async {
-      await tester.pumpWidget(homeBaseWidget);
+      await tester.pumpWidget(homeWidget);
 
       final titleFinder = find.text(emptyListTitle);
       expect(titleFinder, findsOneWidget);
@@ -77,7 +52,7 @@ void main() {
 
     testWidgets('Test check exist of search icon in widget tree',
         (tester) async {
-      await tester.pumpWidget(wrapMaterialWidget(homeBaseWidget));
+      await tester.pumpWidget(MaterialWrapper(homeWidget));
       final iconSearch = find.byIcon(Icons.search);
       expect(iconSearch, findsOneWidget);
     });
@@ -85,10 +60,10 @@ void main() {
 
   group('Home page - with data UI smoke tests', () {
     testWidgets('Filled with data smoke test', (tester) async {
-      when(() => mockTodoRepo.getTodos())
+      when(() => mockRepository.getTodos())
           .thenAnswer((_) async => [_todo1, _todo2, _todo3]);
-      await tester.pumpWidget(homeBaseWidget);
-      homePageCubit.getTodos(FilterKind.all);
+      await tester.pumpWidget(homeWidget);
+      homeCubit.getTodos(FilterKind.all);
       await tester.pumpAndSettle();
       expect(find.text(_todo1.title), findsOneWidget);
       expect(find.text(_todo2.title), findsOneWidget);
@@ -99,10 +74,10 @@ void main() {
   group('Test navigation stack Home Page to Details page', () {
     testWidgets('Test navigation builder from Home Page to Details page',
         (tester) async {
-      when(() => mockTodoRepo.getTodos())
+      when(() => mockRepository.getTodos())
           .thenAnswer((_) async => [_todo1, _todo2, _todo3]);
-      await tester.pumpWidget(homeBaseWidget);
-      homePageCubit.getTodos(FilterKind.all);
+      await tester.pumpWidget(homeWidget);
+      homeCubit.getTodos(FilterKind.all);
 
       /// Wait till network or cache request has done
       await tester.pumpAndSettle();

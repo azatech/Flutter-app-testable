@@ -4,12 +4,22 @@ import 'package:drift_app_testble/page/services/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'golden_test_example/test_image.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initGetIt();
+  // runApp(
+  //   const MyApp(),
+  // );
   runApp(
-    const MyApp(),
+    const GoldenTestExampleWithImage(),
   );
+  // runApp(
+  //   TestApp(
+  //     items: List<String>.generate(10000, (i) => 'Item $i'),
+  //   ),
+  // );
 }
 
 class MyApp extends StatelessWidget {

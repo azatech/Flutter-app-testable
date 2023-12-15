@@ -41,3 +41,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+test/golden_test/failures
+test/golden_test/test_golden_button_example/failures
+test/golden_test/home_page/failures

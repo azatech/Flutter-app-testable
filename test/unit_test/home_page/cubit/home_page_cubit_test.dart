@@ -6,11 +6,7 @@ import 'package:drift_app_testble/page/home/cubit/home_page_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-
-const _initCompletedState = HomePageUpdatedState(
-  todos: [],
-  filter: FilterKind.all,
-);
+import '../../../../integration_test/test_app_helper.dart';
 
 final stateWithTodos = HomePageUpdatedState(
   todos: todosList,
@@ -21,8 +17,6 @@ final _todo1 = UnitTodoFactory.todo1;
 final _todo2 = UnitTodoFactory.todo2;
 final _todo3 = UnitTodoFactory.todo3;
 
-class MockTodoService extends Mock implements TodoRepository {}
-
 final todosList = [_todo1, _todo2, _todo3];
 
 void main() {
@@ -30,8 +24,13 @@ void main() {
   late TodoRepository mockService;
 
   setUp(() async {
-    mockService = MockTodoService();
-    homeCubit = HomePageCubit(todoRepository: mockService);
+    final (_, homeC, _, mockR) = TestAppHelper.setUpHomeMain();
+    homeCubit = homeC;
+    mockService = mockR;
+  });
+
+  tearDown(() async {
+    TestAppHelper.reset();
   });
 
   group(
