@@ -1,7 +1,7 @@
-Feature: Home
+Feature: Home page BDD testing
 
   After:
-    Then clean up after the test
+  Then clean up after the test
 
   Scenario: Home page is presented
     Given I'm opening app
@@ -15,3 +15,10 @@ Feature: Home
     And I see {'TODO App'} text
     Then I see {'title_1'} text
     And I see {'title_2'} text
+
+
+  @testMethodName: testGoldens
+
+  Scenario: Home page screenshot is verified
+    Given The app is rendered
+    Then The {'home_page_screenshot'} screenshot verified
