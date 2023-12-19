@@ -1,7 +1,7 @@
 Feature: Home page BDD testing
 
   After:
-  Then clean up after the test
+  Then clean up after
 
   Scenario: Home page is presented
     Given I'm opening app
