@@ -14,4 +14,4 @@ jobs:
       - name: install dependencies
         run: flutter packages get
       - name: run tests
-        run: flutter test --exclude-tags='no-ci'
+        run: flutter test --exclude-tags='no-ci' --update-goldens

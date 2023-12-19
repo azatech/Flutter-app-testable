@@ -10,7 +10,7 @@ import 'im_opening_app_with_todos_in_db.dart';
 /// Usage: The app is rendered
 Future<void> theAppIsRendered(WidgetTester tester) async {
   /// This helps us to see app fonts in golden file
-  await loadAppFonts();
+  // await loadAppFonts();
 
   /// Different scenarios of device builder
   final builder = DeviceBuilder()
