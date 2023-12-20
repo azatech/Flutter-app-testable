@@ -27,3 +27,12 @@ Future<void> main() {
     },
   );
 }
+
+/// Command to run integration test on real device in PROFILE MODE
+/*
+flutter drive \
+  --driver=test_driver/perf_driver.dart \
+  --target=integration_test/home_page/home_page_scrolling_performance_test.dart \
+  --profile \
+  --no-dds
+ */
