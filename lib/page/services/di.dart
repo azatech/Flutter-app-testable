@@ -12,6 +12,7 @@ GetIt getIt = GetIt.instance;
 Future<void> unregisterGetIt() async {
   getIt.reset();
 }
+
 Future<void> initGetIt() async {
   /// Singletons
   getIt.registerSingleton<AppDB>(AppDB());
@@ -19,8 +20,10 @@ Future<void> initGetIt() async {
   getIt.registerSingleton<TodoRepository>(TodoService(appDb: getIt()));
 
   /// Factories
-  getIt.registerFactory<HomePageCubit>(
-    () => HomePageCubit(todoRepository: getIt()),
+  getIt.registerFactoryParam<HomePageCubit, TodoRepository?, TodoData?>(
+    (repo, _) => HomePageCubit(
+      todoRepository: repo ?? getIt(),
+    ),
   );
   getIt.registerFactoryParam<TodoDetailsCubit, TodoRepository, TodoData?>(
     (_, todo) => TodoDetailsCubit(

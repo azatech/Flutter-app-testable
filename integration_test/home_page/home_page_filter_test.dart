@@ -46,7 +46,10 @@ void main() {
         todo: currentTodo,
       );
 
-      getIt.registerFactory<TodoDetailsCubit>(() => detailsCubit);
+      if (getIt.isRegistered<TodoDetailsCubit>()) {
+        getIt.unregister<TodoDetailsCubit>();
+        getIt.registerFactory<TodoDetailsCubit>(() => detailsCubit);
+      }
 
       when(() => mockRepository.getTodos())
           .thenAnswer((_) async => [...UnitTodoFactory.fullListTodos]);
@@ -97,7 +100,10 @@ void main() {
         todo: currentTodo,
       );
 
-      getIt.registerFactory<TodoDetailsCubit>(() => detailsCubit);
+      if (getIt.isRegistered<TodoDetailsCubit>()) {
+        getIt.unregister<TodoDetailsCubit>();
+        getIt.registerFactory<TodoDetailsCubit>(() => detailsCubit);
+      }
 
       when(() => mockRepository.getTodos())
           .thenAnswer((_) async => [...UnitTodoFactory.fullListTodos]);

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:drift_app_testble/data/services/for_test/fake_todo_service_for_t.dart';
 import 'package:drift_app_testble/domain/repository/todo_repository.dart';
 import 'package:drift_app_testble/local/db/app_db.dart';
 import 'package:drift_app_testble/page/details_page/todo_details_page.dart';
@@ -22,9 +23,7 @@ void main() {
 
   setUp(() async {
     final (homeW, homeC, _, mockR, randomI) =
-        TestPerformanceAppHelper.setUpHomeWithItems(
-      1500,
-    );
+        TestPerformanceAppHelper.setUpHomeWithItems(fakeCount);
     homeWidget = homeW;
     homeCubit = homeC;
     mockRepository = mockR;

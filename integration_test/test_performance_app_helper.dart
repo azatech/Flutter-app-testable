@@ -14,6 +14,19 @@ import 'helpers/material_wrapper.dart';
 import 'mocks/mock_todo_repository.dart';
 
 abstract class TestPerformanceAppHelper {
+  static List<TodoData> getFakeItems([
+    int c = 10000,
+  ]) {
+    List<TodoData> items = List.generate(
+      c,
+      (index) => TodoData(
+        id: Random().nextInt(c * 2),
+        title: 'title_$index',
+      ),
+    );
+    return items;
+  }
+
   static (
     Widget,
     HomePageCubit,
@@ -28,15 +41,9 @@ abstract class TestPerformanceAppHelper {
     late TodoData randomItem;
 
     /// Generate fake items
-    List<TodoData> items = List.generate(
-      itemsCount,
-      (index) => TodoData(
-        id: Random().nextInt(itemsCount + itemsCount),
-        title: 'title_$index',
-      ),
-    );
+    final items = getFakeItems(itemsCount);
     randomItem =
-        items[max(Random().nextInt(items.length), itemsCount * 0.9).toInt()];
+        items[min(Random().nextInt(items.length), itemsCount * 0.1).toInt()];
 
     /// get it base init
     mockRepository = MockTodoRepo();
