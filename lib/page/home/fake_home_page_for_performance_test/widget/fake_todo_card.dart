@@ -42,7 +42,7 @@ class FakeTodoCard extends StatelessWidget {
 
   Widget getTitle() {
     for (var i = 0; i < 30; i++) {
-      print(_fibonacci(i));
+      // print(_fibonacci(i));
     }
     return Text(todo.title);
   }

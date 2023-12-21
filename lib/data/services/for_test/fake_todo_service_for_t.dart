@@ -5,6 +5,8 @@ import 'package:drift_app_testble/domain/repository/todo_repository.dart';
 import 'package:drift_app_testble/local/db/app_db.dart';
 import 'package:drift_app_testble/local/db/tables/todos_dao.dart';
 
+int fakeCount = 1000;
+
 List<TodoData> _internalFakeIt(int c) => List.generate(
       c,
       (index) => TodoData(
@@ -51,7 +53,7 @@ class FakeTodoServiceForT implements TodoRepository {
   Future<List<TodoData>> getTodos({
     String? query,
   }) async {
-    final items = _internalFakeIt(10000);
+    final items = _internalFakeIt(fakeCount);
     return items;
   }
 

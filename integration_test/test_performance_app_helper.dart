@@ -43,7 +43,7 @@ abstract class TestPerformanceAppHelper {
     /// Generate fake items
     final items = getFakeItems(itemsCount);
     randomItem =
-        items[max(Random().nextInt(items.length), itemsCount * 0.9).toInt()];
+        items[min(Random().nextInt(items.length), itemsCount * 0.1).toInt()];
 
     /// get it base init
     mockRepository = MockTodoRepo();
