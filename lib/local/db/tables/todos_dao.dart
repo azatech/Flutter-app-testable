@@ -10,7 +10,7 @@ part 'todos_dao.g.dart';
 
 @DriftAccessor(tables: [Todo])
 class TodosDao extends DatabaseAccessor<AppDB> with _$TodosDaoMixin {
-  TodosDao(AppDB db) : super(db);
+  TodosDao(super.db);
 
   Future<List<TodoData>> _getTodos({
     String? query,

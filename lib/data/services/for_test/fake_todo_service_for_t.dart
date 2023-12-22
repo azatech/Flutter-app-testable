@@ -15,6 +15,8 @@ List<TodoData> _internalFakeIt(int c) => List.generate(
       ),
     );
 
+final todoItems = _internalFakeIt(fakeCount);
+
 class FakeTodoServiceForT implements TodoRepository {
   final AppDB appDb;
 
@@ -53,8 +55,7 @@ class FakeTodoServiceForT implements TodoRepository {
   Future<List<TodoData>> getTodos({
     String? query,
   }) async {
-    final items = _internalFakeIt(fakeCount);
-    return items;
+    return todoItems;
   }
 
   @override
@@ -71,11 +72,7 @@ class FakeTodoServiceForT implements TodoRepository {
 
   @override
   Stream<List<TodoData>> watchTodos() {
-    final stream = Stream.fromIterable([
-      _internalFakeIt(
-        10000,
-      )
-    ]);
+    final stream = Stream.fromIterable([todoItems]);
     return stream;
   }
 }

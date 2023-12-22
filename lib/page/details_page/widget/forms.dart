@@ -89,13 +89,13 @@ class InlineFormField<T> extends FormField<T> {
 
 class StringFormField extends StatelessWidget {
   const StringFormField({
-    Key? key,
+    super.key,
     required this.label,
     required this.value,
     required this.onChanged,
     this.validator,
     this.builder,
-  }) : super(key: key);
+  });
 
   final String label;
   final String? value;
@@ -131,13 +131,12 @@ typedef TextFieldBuilder = Widget Function(
 
 class _TextField extends StatefulWidget {
   const _TextField({
-    Key? key,
     required this.value,
     required this.label,
     required this.onChanged,
     this.builder,
     this.validator,
-  }) : super(key: key);
+  });
 
   final String label;
   final String? value;

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class SaveButton extends StatelessWidget {
@@ -5,13 +7,14 @@ class SaveButton extends StatelessWidget {
   final Function() onPressed;
 
   const SaveButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.isActive,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
+    final isActive = Random().nextBool();
     return AbsorbPointer(
       absorbing: !isActive,
       child: SizedBox(

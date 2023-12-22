@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:drift_app_testble/data/services/for_test/fake_todo_service_for_t.dart';
-import 'package:drift_app_testble/domain/repository/todo_repository.dart';
 import 'package:drift_app_testble/local/db/app_db.dart';
 import 'package:drift_app_testble/page/details_page/todo_details_page.dart';
 import 'package:drift_app_testble/page/home/cubit/home_page_cubit.dart';
@@ -18,15 +17,13 @@ void main() {
 
   late Widget homeWidget;
   late HomePageCubit homeCubit;
-  late TodoRepository mockRepository;
   late TodoData randomItem;
 
   setUp(() async {
-    final (homeW, homeC, _, mockR, randomI) =
+    final (homeW, homeC, _, _, randomI) =
         TestPerformanceAppHelper.setUpHomeWithItems(fakeCount);
     homeWidget = homeW;
     homeCubit = homeC;
-    mockRepository = mockR;
     randomItem = randomI;
   });
 
@@ -53,6 +50,7 @@ void main() {
           int.tryParse(randomItem.title.replaceAll(RegExp(r'[^0-9.]'), '')) ??
               15;
 
+      // ignore: avoid_print
       print('Random num is: ------> $r');
 
       final cardFinder = find.byKey(Key(todoCardKey(r)));

@@ -10,7 +10,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../test/unit_test/home_page/cubit/home_page_cubit_test.dart';
 import '../helpers/material_wrapper.dart';
 import '../test_app_helper.dart';
 

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 class ArticleWidget extends StatelessWidget {
   const ArticleWidget({
-    Key? key,
+    super.key,
     required this.child,
     this.maxWidth = 800,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final double maxWidth;

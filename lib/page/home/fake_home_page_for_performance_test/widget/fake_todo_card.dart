@@ -1,3 +1,7 @@
+// ignore_for_file: avoid_print
+
+import 'dart:developer';
+
 import 'package:drift_app_testble/local/db/app_db.dart';
 import 'package:flutter/material.dart';
 
@@ -41,9 +45,15 @@ class FakeTodoCard extends StatelessWidget {
   }
 
   Widget getTitle() {
-    for (var i = 0; i < 30; i++) {
-      // print(_fibonacci(i));
+    /// Performance timeline check!
+    Timeline.startSync("Looooooong method call!!");
+    final ind =
+        int.tryParse(todo.title.replaceAll(RegExp(r'[^0-9.]'), '')) ?? 15;
+    if (ind % 50 == 0) {
+      print(ind);
+      print(_fibonacci(44));
     }
+    Timeline.finishSync();
     return Text(todo.title);
   }
 }
