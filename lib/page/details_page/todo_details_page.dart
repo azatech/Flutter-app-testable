@@ -87,25 +87,22 @@ class _MainViewState extends State<_MainView> with ConfirmableDialogMixin {
                 right: 16,
                 bottom: 16,
               ),
-              child: Container(
-                color: Colors.amber,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: const [
-                          _TitleRow(),
-                          _DescriptionRow(),
-                          _DateRow(),
-                        ],
-                      ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: const [
+                        _TitleRow(),
+                        _DescriptionRow(),
+                        _DateRow(),
+                      ],
                     ),
-                    _BottomSaveButton(
-                      onPressed: () => _save(context),
-                    ),
-                  ],
-                ),
+                  ),
+                  _BottomSaveButton(
+                    onPressed: () => _save(context),
+                  ),
+                ],
               ),
             ),
           ),
@@ -325,12 +322,10 @@ class _BottomSaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DetailsCubitSelectorWrapper(
-      selector: (TodoDetailsState state) => state.modified,
-      builder: (value) => SaveButton(
-        isActive: value,
-        onPressed: onPressed,
-      ),
+    final modified = context.select((TodoDetailsCubit c) => c.state.modified);
+    return SaveButton(
+      isActive: modified,
+      onPressed: onPressed,
     );
   }
 }
