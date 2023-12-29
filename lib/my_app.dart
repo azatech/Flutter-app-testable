@@ -22,8 +22,7 @@ class MyApp extends StatelessWidget {
       home: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => getIt<HomePageCubit>(
-            ),
+            create: (context) => getIt<HomePageCubit>(),
             lazy: false,
           ),
         ],

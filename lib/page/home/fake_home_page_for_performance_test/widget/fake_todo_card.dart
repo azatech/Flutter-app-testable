@@ -51,7 +51,7 @@ class FakeTodoCard extends StatelessWidget {
         int.tryParse(todo.title.replaceAll(RegExp(r'[^0-9.]'), '')) ?? 15;
     if (ind % 50 == 0) {
       print(ind);
-      print(_fibonacci(44));
+      print(_fibonacci(34));
     }
     Timeline.finishSync();
     return Text(todo.title);
